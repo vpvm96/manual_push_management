@@ -12,12 +12,12 @@ export const routesConfig = [
         pageKey: "DashboardPage",
       },
       {
-        path: RoutesConfig.MAIN.PUSH_EMAIL,
-        pageKey: "PushEmailPage",
+        path: RoutesConfig.MAIN.NOTIFICATIONS.EMAIL,
+        pageKey: "EmailNotificationPage",
       },
       {
-        path: RoutesConfig.MAIN.HISTORY,
-        pageKey: "HistoryPage",
+        path: RoutesConfig.MAIN.NOTIFICATIONS.PUSH,
+        pageKey: "PushNotificationPage",
       },
     ],
   },

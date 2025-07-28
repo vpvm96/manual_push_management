@@ -27,71 +27,75 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ReplayIcon from "@mui/icons-material/Replay";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
-interface EmailHistory {
+interface PushHistory {
   id: number;
-  recipient: string;
-  subject: string;
+  deviceToken: string;
+  title: string;
+  message: string;
+  priority: "low" | "normal" | "high";
+  category: string;
   sentAt: string;
   status: "성공" | "실패" | "대기중";
-  content: string;
 }
 
 // 임시 데이터
-const emailHistoryData: EmailHistory[] = [
+const pushHistoryData: PushHistory[] = [
   {
     id: 1,
-    recipient: "test1@example.com",
-    subject: "테스트 메일 1",
+    deviceToken: "abc123...xyz789",
+    title: "새로운 메시지",
+    message: "새로운 메시지가 도착했습니다.",
+    priority: "normal",
+    category: "general",
     sentAt: "2025-01-15 10:30:25",
     status: "성공",
-    content: "안녕하세요. 첫 번째 테스트 메일입니다.",
   },
   {
     id: 2,
-    recipient: "test2@example.com",
-    subject: "테스트 메일 2",
+    deviceToken: "def456...uvw012",
+    title: "긴급 알림",
+    message: "긴급 상황이 발생했습니다.",
+    priority: "high",
+    category: "alert",
     sentAt: "2025-01-15 11:00:10",
     status: "실패",
-    content: "두 번째 테스트 메일 내용입니다.",
   },
   {
     id: 3,
-    recipient: "user@company.com",
-    subject: "회사 공지사항",
+    deviceToken: "ghi789...rst345",
+    title: "프로모션 안내",
+    message: "특별 할인 이벤트를 확인하세요.",
+    priority: "low",
+    category: "promotion",
     sentAt: "2025-01-15 14:15:30",
     status: "성공",
-    content: "회사 공지사항을 전달드립니다.",
   },
   {
     id: 4,
-    recipient: "admin@service.com",
-    subject: "시스템 점검 안내",
+    deviceToken: "jkl012...opq678",
+    title: "업데이트 알림",
+    message: "새로운 버전이 출시되었습니다.",
+    priority: "normal",
+    category: "update",
     sentAt: "2025-01-15 16:45:00",
     status: "대기중",
-    content: "시스템 점검 예정 안내 메일입니다.",
-  },
-  {
-    id: 5,
-    recipient: "support@example.org",
-    subject: "문의사항 답변",
-    sentAt: "2025-01-15 18:20:15",
-    status: "성공",
-    content: "문의해주신 내용에 대한 답변입니다.",
   },
 ];
 
 type Order = "asc" | "desc";
-type OrderBy = keyof EmailHistory;
+type OrderBy = keyof PushHistory;
 
-export const EmailHistoryTable = () => {
-  const [data, setData] = useState<EmailHistory[]>(emailHistoryData);
+export const PushHistoryTable = () => {
+  const [data, setData] = useState<PushHistory[]>(pushHistoryData);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<OrderBy>("sentAt");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [priorityFilter, setPriorityFilter] = useState<string>("all");
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(
     null
   );
@@ -99,14 +103,17 @@ export const EmailHistoryTable = () => {
   // 검색 필터링
   const filteredData = data.filter((item) => {
     const matchesSearch =
-      item.recipient.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.content.toLowerCase().includes(searchTerm.toLowerCase());
+      item.deviceToken.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.message.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus =
       statusFilter === "all" || item.status === statusFilter;
+    const matchesPriority =
+      priorityFilter === "all" || item.priority === priorityFilter;
 
-    return matchesSearch && matchesStatus;
+    return matchesSearch && matchesStatus && matchesPriority;
   });
 
   // 정렬
@@ -156,15 +163,8 @@ export const EmailHistoryTable = () => {
     setFilterAnchorEl(null);
   };
 
-  const handleStatusFilter = (status: string) => {
-    setStatusFilter(status);
-    setPage(0);
-    handleFilterClose();
-  };
-
   const handleRefresh = () => {
-    // 실제로는 API 호출을 통해 데이터를 새로고침
-    console.log("데이터 새로고침");
+    console.log("PUSH 데이터 새로고침");
   };
 
   const getStatusChip = (status: string) => {
@@ -175,6 +175,24 @@ export const EmailHistoryTable = () => {
     };
 
     const config = statusConfig[status as keyof typeof statusConfig];
+    return (
+      <Chip
+        label={config.label}
+        color={config.color}
+        size="small"
+        variant="outlined"
+      />
+    );
+  };
+
+  const getPriorityChip = (priority: string) => {
+    const priorityConfig = {
+      low: { color: "default" as const, label: "낮음" },
+      normal: { color: "primary" as const, label: "보통" },
+      high: { color: "error" as const, label: "높음" },
+    };
+
+    const config = priorityConfig[priority as keyof typeof priorityConfig];
     return (
       <Chip
         label={config.label}
@@ -196,13 +214,20 @@ export const EmailHistoryTable = () => {
     });
   };
 
+  const truncateToken = (token: string) => {
+    return `${token.substring(0, 8)}...${token.substring(token.length - 8)}`;
+  };
+
   return (
-    <Card>
+    <Card sx={{ width: "100%" }}>
       <CardContent sx={{ p: 3 }}>
         <Box sx={{ mb: 3 }}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
-            발송 내역
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+            <NotificationsIcon sx={{ mr: 2, fontSize: 32 }} />
+            <Typography variant="h4" sx={{ fontWeight: 600 }}>
+              PUSH 알림 내역
+            </Typography>
+          </Box>
 
           {/* 검색 및 필터 영역 */}
           <Stack
@@ -211,7 +236,7 @@ export const EmailHistoryTable = () => {
             sx={{ mt: 2, mb: 3 }}
           >
             <TextField
-              placeholder="수신자, 제목, 내용으로 검색..."
+              placeholder="디바이스 토큰, 제목, 메시지로 검색..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -232,7 +257,7 @@ export const EmailHistoryTable = () => {
                 variant="outlined"
                 size="small"
               >
-                상태 필터
+                필터
               </Button>
               <Button
                 startIcon={<RefreshIcon />}
@@ -251,26 +276,41 @@ export const EmailHistoryTable = () => {
             open={Boolean(filterAnchorEl)}
             onClose={handleFilterClose}
           >
+            <MenuItem disabled>
+              <Typography variant="subtitle2">상태</Typography>
+            </MenuItem>
             <MenuItem
-              onClick={() => handleStatusFilter("all")}
+              onClick={() => {
+                setStatusFilter("all");
+                setPage(0);
+              }}
               selected={statusFilter === "all"}
             >
               전체
             </MenuItem>
             <MenuItem
-              onClick={() => handleStatusFilter("성공")}
+              onClick={() => {
+                setStatusFilter("성공");
+                setPage(0);
+              }}
               selected={statusFilter === "성공"}
             >
               성공
             </MenuItem>
             <MenuItem
-              onClick={() => handleStatusFilter("실패")}
+              onClick={() => {
+                setStatusFilter("실패");
+                setPage(0);
+              }}
               selected={statusFilter === "실패"}
             >
               실패
             </MenuItem>
             <MenuItem
-              onClick={() => handleStatusFilter("대기중")}
+              onClick={() => {
+                setStatusFilter("대기중");
+                setPage(0);
+              }}
               selected={statusFilter === "대기중"}
             >
               대기중
@@ -292,24 +332,27 @@ export const EmailHistoryTable = () => {
                     ID
                   </TableSortLabel>
                 </TableCell>
+                <TableCell>디바이스 토큰</TableCell>
                 <TableCell>
                   <TableSortLabel
-                    active={orderBy === "recipient"}
-                    direction={orderBy === "recipient" ? order : "asc"}
-                    onClick={() => handleRequestSort("recipient")}
-                  >
-                    수신자
-                  </TableSortLabel>
-                </TableCell>
-                <TableCell>
-                  <TableSortLabel
-                    active={orderBy === "subject"}
-                    direction={orderBy === "subject" ? order : "asc"}
-                    onClick={() => handleRequestSort("subject")}
+                    active={orderBy === "title"}
+                    direction={orderBy === "title" ? order : "asc"}
+                    onClick={() => handleRequestSort("title")}
                   >
                     제목
                   </TableSortLabel>
                 </TableCell>
+                <TableCell>메시지</TableCell>
+                <TableCell>
+                  <TableSortLabel
+                    active={orderBy === "priority"}
+                    direction={orderBy === "priority" ? order : "asc"}
+                    onClick={() => handleRequestSort("priority")}
+                  >
+                    우선순위
+                  </TableSortLabel>
+                </TableCell>
+                <TableCell>카테고리</TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={orderBy === "sentAt"}
@@ -336,8 +379,25 @@ export const EmailHistoryTable = () => {
                 <TableRow key={row.id} hover>
                   <TableCell>{row.id}</TableCell>
                   <TableCell>
-                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                      {row.recipient}
+                    <Typography
+                      variant="body2"
+                      sx={{ fontFamily: "monospace" }}
+                    >
+                      {truncateToken(row.deviceToken)}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        maxWidth: 150,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {row.title}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -350,8 +410,16 @@ export const EmailHistoryTable = () => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      {row.subject}
+                      {row.message}
                     </Typography>
+                  </TableCell>
+                  <TableCell>{getPriorityChip(row.priority)}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={row.category}
+                      size="small"
+                      variant="outlined"
+                    />
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2" color="text.secondary">
@@ -361,7 +429,7 @@ export const EmailHistoryTable = () => {
                   <TableCell>{getStatusChip(row.status)}</TableCell>
                   <TableCell>
                     <Stack direction="row" spacing={1}>
-                      <Tooltip title="내용 보기">
+                      <Tooltip title="상세 보기">
                         <IconButton size="small">
                           <VisibilityIcon fontSize="small" />
                         </IconButton>

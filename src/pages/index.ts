@@ -1,5 +1,3 @@
-import DashboardPage from "./dashboard/dashboard-page";
-import HistoryPage from "./history/history-page";
-import PushEmailPage from "./push-email/push-email-page";
-
-export { DashboardPage, HistoryPage, PushEmailPage };
+export { default as DashboardPage } from "./dashboard/dashboard-page";
+export { default as EmailNotificationPage } from "./notifications/email/email-notification-page";
+export { default as PushNotificationPage } from "./notifications/push/push-notification-page";

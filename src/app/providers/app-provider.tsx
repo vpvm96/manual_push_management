@@ -5,13 +5,17 @@ import { theme } from "@/shared/config/mui/theme";
 import { CustomRouter } from "@/shared/router";
 import { routesConfig } from "@/shared/router/config/routes";
 import { AppLayout } from "@/app/layouts/app-layout";
-import { DashboardPage, HistoryPage, PushEmailPage } from "@/pages";
+import {
+  DashboardPage,
+  EmailNotificationPage,
+  PushNotificationPage,
+} from "@/pages";
 
 // 컴포넌트 맵핑
 const componentMap = {
   AppLayout,
-  PushEmailPage,
-  HistoryPage,
+  EmailNotificationPage,
+  PushNotificationPage,
   DashboardPage,
 } as const;
 
