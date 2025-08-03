@@ -1,6 +1,7 @@
 export const RoutesConfig = {
   MAIN: {
     DASHBOARD: "/",
+    HISTORY: "/history",
     NOTIFICATIONS: {
       EMAIL: "/notifications/email",
       PUSH: "/notifications/push",

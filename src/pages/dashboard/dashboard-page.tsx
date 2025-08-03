@@ -1,5 +1,7 @@
+import { DashboardManagement } from "../../features/dashboard-management";
+
 const DashboardPage = () => {
-  return <div>DashboardPage</div>;
+  return <DashboardManagement />;
 };
 
 export default DashboardPage;

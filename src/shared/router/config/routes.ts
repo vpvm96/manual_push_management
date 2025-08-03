@@ -19,6 +19,10 @@ export const routesConfig = [
         path: RoutesConfig.MAIN.NOTIFICATIONS.PUSH,
         pageKey: "PushNotificationPage",
       },
+      {
+        path: RoutesConfig.MAIN.HISTORY,
+        pageKey: "HistoryPage",
+      },
     ],
   },
 ];

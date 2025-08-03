@@ -7,7 +7,6 @@ import {
   Box,
   Typography,
   ListItemIcon,
-  useTheme,
   Collapse,
   Chip,
 } from "@mui/material";
@@ -18,6 +17,8 @@ import {
   ExpandLess,
   Email,
   NotificationsActive,
+  Dashboard,
+  History,
 } from "@mui/icons-material";
 import { useState } from "react";
 
@@ -32,6 +33,14 @@ interface MenuItem {
   children?: MenuItem[];
   expanded?: boolean;
 }
+
+const dashboardMenuStructure: MenuItem[] = [
+  {
+    text: "Dashboard",
+    path: "/",
+    icon: <Dashboard />,
+  },
+];
 
 const elementsMenuStructure: MenuItem[] = [
   {
@@ -48,9 +57,16 @@ const elementsMenuStructure: MenuItem[] = [
   },
 ];
 
+const historyMenuStructure: MenuItem[] = [
+  {
+    text: "발송 내역",
+    path: "/history",
+    icon: <History />,
+  },
+];
+
 export const AppSidebar = () => {
   const location = useLocation();
-  const theme = useTheme();
 
   // 각 확장 가능한 메뉴의 상태 관리
   const [expandedMenus, setExpandedMenus] = useState<{
@@ -209,7 +225,7 @@ export const AppSidebar = () => {
       </Box>
 
       <Box sx={{ flex: 1, overflowY: "auto" }}>
-        {/* ELEMENTS 섹션 */}
+        {/* DASHBOARD 섹션 */}
         <Box sx={{ px: 2, pb: 2, mt: 2 }}>
           <Typography
             variant="body2"
@@ -223,10 +239,52 @@ export const AppSidebar = () => {
               letterSpacing: "0.1em",
             }}
           >
-            ELEMENTS
+            DASHBOARD
+          </Typography>
+          <List sx={{ py: 0 }}>
+            {dashboardMenuStructure.map((item) => renderMenuItem(item))}
+          </List>
+        </Box>
+
+        {/* ELEMENTS 섹션 */}
+        <Box sx={{ px: 2, pb: 2 }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#64748B",
+              fontWeight: 600,
+              mb: 2,
+              px: 1,
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+            }}
+          >
+            NOTIFICATIONS
           </Typography>
           <List sx={{ py: 0 }}>
             {elementsMenuStructure.map((item) => renderMenuItem(item))}
+          </List>
+        </Box>
+
+        {/* HISTORY 섹션 */}
+        <Box sx={{ px: 2, pb: 2 }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: "#64748B",
+              fontWeight: 600,
+              mb: 2,
+              px: 1,
+              fontSize: "0.75rem",
+              textTransform: "uppercase",
+              letterSpacing: "0.1em",
+            }}
+          >
+            HISTORY
+          </Typography>
+          <List sx={{ py: 0 }}>
+            {historyMenuStructure.map((item) => renderMenuItem(item))}
           </List>
         </Box>
       </Box>
