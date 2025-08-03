@@ -143,9 +143,6 @@ export const SendEmailForm = () => {
           <Stack spacing={3}>
             {/* 수신자 입력 */}
             <Box>
-              <Typography variant="h6" gutterBottom>
-                수신자
-              </Typography>
               {emailData.recipients.map((recipient, index) => (
                 <Box
                   key={index}
@@ -157,7 +154,7 @@ export const SendEmailForm = () => {
                 >
                   <TextField
                     fullWidth
-                    label={`수신자 ${index + 1}`}
+                    label={`수신자`}
                     value={recipient}
                     onChange={(e) =>
                       handleRecipientChange(index, e.target.value)
@@ -166,6 +163,7 @@ export const SendEmailForm = () => {
                     helperText={errors[`recipient_${index}`]}
                     placeholder="example@email.com"
                     variant="outlined"
+                    // 포커스 시 테두리 색상 변경
                   />
                   <Box sx={{ ml: 1, display: "flex", gap: 1 }}>
                     {emailData.recipients.length > 1 && (
