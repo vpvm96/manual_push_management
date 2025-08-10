@@ -5,6 +5,7 @@ import { theme } from "@/shared/config/mui/theme";
 import { CustomRouter } from "@/shared/router";
 import { routesConfig } from "@/shared/router/config/routes";
 import { AppLayout } from "@/app/layouts/app-layout";
+import { LayoutProvider } from "@/app/providers/layout-provider";
 import {
   DashboardPage,
   EmailNotificationPage,
@@ -36,7 +37,9 @@ export const AppProvider = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <CustomRouter routes={routes} />
+      <LayoutProvider>
+        <CustomRouter routes={routes} />
+      </LayoutProvider>
     </ThemeProvider>
   );
 };

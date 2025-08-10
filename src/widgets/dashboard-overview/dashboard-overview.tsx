@@ -1,5 +1,4 @@
 import {
-  Grid,
   Card,
   CardContent,
   Typography,
@@ -8,6 +7,7 @@ import {
   Chip,
   Stack,
 } from "@mui/material";
+import Grid from "@mui/material/GridLegacy";
 import {
   Email,
   NotificationsActive,

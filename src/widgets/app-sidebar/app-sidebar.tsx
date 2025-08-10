@@ -18,9 +18,9 @@ import {
   Email,
   NotificationsActive,
   Dashboard,
-  History,
 } from "@mui/icons-material";
 import { useState } from "react";
+import { useLayout } from "@/app/providers/layout-provider";
 
 const DRAWER_WIDTH = 280;
 
@@ -57,16 +57,11 @@ const elementsMenuStructure: MenuItem[] = [
   },
 ];
 
-const historyMenuStructure: MenuItem[] = [
-  {
-    text: "발송 내역",
-    path: "/history",
-    icon: <History />,
-  },
-];
+// 히스토리 메뉴는 이메일/푸시 섹션으로 이전되어 사이드바에서 제거됨
 
 export const AppSidebar = () => {
   const location = useLocation();
+  const { isMobile, isSidebarOpen, closeSidebar } = useLayout();
 
   // 각 확장 가능한 메뉴의 상태 관리
   const [expandedMenus, setExpandedMenus] = useState<{
@@ -166,7 +161,7 @@ export const AppSidebar = () => {
   return (
     <Drawer
       sx={{
-        width: DRAWER_WIDTH,
+        width: isMobile ? 0 : DRAWER_WIDTH,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: DRAWER_WIDTH,
@@ -176,8 +171,10 @@ export const AppSidebar = () => {
           color: "#94A3B8",
         },
       }}
-      variant="permanent"
+      variant={isMobile ? "temporary" : "permanent"}
       anchor="left"
+      open={isMobile ? isSidebarOpen : true}
+      onClose={closeSidebar}
     >
       {/* 브랜드 로고 영역 */}
       <Box sx={{ p: 3, borderBottom: "1px solid rgba(148, 163, 184, 0.1)" }}>
@@ -267,26 +264,7 @@ export const AppSidebar = () => {
           </List>
         </Box>
 
-        {/* HISTORY 섹션 */}
-        <Box sx={{ px: 2, pb: 2 }}>
-          <Typography
-            variant="body2"
-            sx={{
-              color: "#64748B",
-              fontWeight: 600,
-              mb: 2,
-              px: 1,
-              fontSize: "0.75rem",
-              textTransform: "uppercase",
-              letterSpacing: "0.1em",
-            }}
-          >
-            HISTORY
-          </Typography>
-          <List sx={{ py: 0 }}>
-            {historyMenuStructure.map((item) => renderMenuItem(item))}
-          </List>
-        </Box>
+        {/* HISTORY 섹션 제거됨 */}
       </Box>
     </Drawer>
   );

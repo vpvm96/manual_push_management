@@ -1,4 +1,5 @@
-import { Card, CardContent, Typography, Box, Grid } from "@mui/material";
+import { Card, CardContent, Typography, Box } from "@mui/material";
+import Grid from "@mui/material/GridLegacy";
 import {
   BarChart,
   Bar,
@@ -273,7 +274,7 @@ const StatusDistribution = ({ data }: StatusDistributionProps) => {
                     backgroundColor: "#1E293B",
                     border: "1px solid #334155",
                     borderRadius: "8px",
-                    color: "#F8FAFC",
+                    color: "#fff",
                   }}
                 />
               </PieChart>
@@ -330,24 +331,24 @@ const StatusDistribution = ({ data }: StatusDistributionProps) => {
 export const DashboardStats = () => {
   // 실제 프로젝트에서는 API에서 데이터를 가져와야 합니다.
   const weeklyData: ChartData[] = [
-    { name: "월", email: 120, push: 80 },
-    { name: "화", email: 150, push: 95 },
-    { name: "수", email: 180, push: 110 },
-    { name: "목", email: 200, push: 125 },
-    { name: "금", email: 175, push: 105 },
-    { name: "토", email: 90, push: 60 },
-    { name: "일", email: 70, push: 45 },
+    { name: "월", email: 120, push: 80, value: 120 },
+    { name: "화", email: 150, push: 95, value: 150 },
+    { name: "수", email: 180, push: 110, value: 180 },
+    { name: "목", email: 200, push: 125, value: 200 },
+    { name: "금", email: 175, push: 105, value: 175 },
+    { name: "토", email: 90, push: 60, value: 90 },
+    { name: "일", email: 70, push: 45, value: 70 },
   ];
 
   const trendData: ChartData[] = [
-    { name: "1주전", email: 1200, push: 800 },
-    { name: "6일전", email: 1350, push: 920 },
-    { name: "5일전", email: 1180, push: 760 },
-    { name: "4일전", email: 1420, push: 980 },
-    { name: "3일전", email: 1600, push: 1100 },
-    { name: "2일전", email: 1750, push: 1250 },
-    { name: "1일전", email: 1580, push: 1080 },
-    { name: "오늘", email: 1234, push: 856 },
+    { name: "1주전", email: 1200, push: 800, value: 1200 },
+    { name: "6일전", email: 1350, push: 920, value: 1350 },
+    { name: "5일전", email: 1180, push: 760, value: 1180 },
+    { name: "4일전", email: 1420, push: 980, value: 1420 },
+    { name: "3일전", email: 1600, push: 1100, value: 1600 },
+    { name: "2일전", email: 1750, push: 1250, value: 1750 },
+    { name: "1일전", email: 1580, push: 1080, value: 1580 },
+    { name: "오늘", email: 1234, push: 856, value: 1234 },
   ];
 
   const statusData: ChartData[] = [

@@ -63,17 +63,24 @@ export const DashboardManagement = () => {
             "& .MuiTab-root": {
               textTransform: "none",
               fontSize: "1rem",
-              fontWeight: 500,
+              fontWeight: 600,
               minWidth: 120,
               color: "text.secondary",
+              borderRadius: 1,
+              mx: 0.5,
+              px: 1.5,
               "&.Mui-selected": {
-                color: "primary.main",
-                fontWeight: 600,
+                color: "primary.contrastText",
+                backgroundColor: "primary.main",
+              },
+              "&:hover": {
+                backgroundColor: "grey.700",
               },
             },
             "& .MuiTabs-indicator": {
-              backgroundColor: "primary.main",
+              backgroundColor: "primary.light",
               height: 3,
+              borderRadius: 3,
             },
           }}
         >

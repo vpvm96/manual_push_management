@@ -121,6 +121,16 @@ export const theme = createTheme({
         },
       },
     },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          "&:focus, &:focus-visible": {
+            outline: "none",
+            boxShadow: "none",
+          },
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {

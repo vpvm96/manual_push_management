@@ -21,6 +21,8 @@ import {
   Button,
   Tooltip,
 } from "@mui/material";
+import SimpleBar from "simplebar-react";
+import "simplebar-react/dist/simplebar.min.css";
 import { useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterListIcon from "@mui/icons-material/FilterList";
@@ -319,8 +321,8 @@ export const PushHistoryTable = () => {
         </Box>
 
         {/* 테이블 */}
-        <TableContainer>
-          <Table>
+        <TableContainer component={SimpleBar} style={{ maxHeight: 480 }}>
+          <Table stickyHeader sx={{ minWidth: 960 }}>
             <TableHead>
               <TableRow>
                 <TableCell>
